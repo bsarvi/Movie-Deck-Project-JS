@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Google Font - Poppins and Young Serif -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=Young+Serif&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Fontawsome icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- Css file -->
+    <link href="./styles/styles.css" rel="stylesheet" />
+
+    <!-- Js file -->
+    <script src="./js/app.js" type="module" defer></script>
+
+    <title>Movie Deck</title>
+  </head>
+  <body class="bg-primary-600 text-primary-100 flex flex-col min-h-screen gap-1 my-1 relative">
+    <!-- Start=>Header -->
+    <header class="bg-primary-500 mx-1 rounded-lg">
+      <nav class="container m-auto p-2 py-4">
+        <h1
+          class="text-primary-200 font-black text-2xl font-young-serif hover:text-accent transition-all duration-100 cursor-pointer"
+        >
+          <a href="/">Movie Deck</a>
+        </h1>
+      </nav>
+    </header>
+    <!-- End=>Header -->
+
+    <!-- Start=>Main -->
+    <main class="flex-1 mx-1 bg-primary-500 rounded-lg">
+      <div class="container m-auto relative my-4 p-2">
+
+        <div class="flex flex-col gap-2 m-2 sm:flex-row sm:justify-between">
+          <div class="relative sm:max-w-lg flex-1">
+            <div
+              id="search-form"
+              class="flex gap-2 bg-primary-400 p-2 px-6 rounded-full overflow-hidden w-full"
+            >
+              <input
+                placeholder="Search by name"
+                id="search-input"
+                name="search-input"
+                class="bg-transparent flex-1 focus:outline-none"
+                autocomplete="false"
+                type="search"
+                
+              />
+              <button
+                type="submit"
+                class="text-primary-200 hover:text-accent duration-200 transition-all"
+              >
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+            <div
+              id="search-result-container"
+              class="absolute w-full mt-2 bg-primary-400 rounded-lg hidden z-50"
+            >
+              <div
+                class="max-h-80 overflow-y-auto overflow-x-hidden w-full space-y-2 p-2"
+              >
+                <div
+                  id="search-loader"
+                  class="flex justify-center items-center"
+                >
+                  <p class="text-primary-300">Enter name to search</p>
+                </div>
+                <section
+                  id="search-card-container"
+                  class="flex flex-col gap-y-2"
+                ></section>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-2">
+            <select id="sort-date" name="sort-by-date">
+              <option value="">Sort by Date</option>
+              <option value="desc">Date-Descending</option>
+              <option value="asc">Date-Ascending</option>
+            </select>
+            <select id="sort-rating">
+              <option value="">Sort by Rating</option>
+              <option value="desc">Rating-Descending</option>
+              <option value="asc">Rating-Ascending</option>
+            </select>
+          </div>
+        </div>
+        
+      <section>
+        <div>
+          <button id="all-tab" class="btn btn-active w-32 capitalize" >all</button>
+          <button id="fav-tab" class="btn w-32 capitalize">favorite</button>
+        </div>
+        <div id="cards-container" class="flex flex-wrap gap-3 justify-center m-2 mt-6 min-h-[300px]">
+        </div>
+      </section>
+      
+      <div class="flex items-center justify-center gap-4 mt-4">
+        <button id="prev-btn" class="btn w-32 capitalize" >Previous</button>
+        <p id="page-no">1 of 10</p>
+        <button id="next-btn" class="btn w-32 capitalize" >Next</button>
+
+      </div>
+      <div/>
+    </main>
+    <!-- Start=>Main -->
+
+    <!-- Start=>Footer -->
+    <footer class="bg-primary-500 mx-1 rounded-lg">
+      <div class="container m-auto p-2 py-4 flex justify-center items-center">
+        <p>
+          <i class="fa-solid fa-copyright font-black text-primary-200"></i> 2023
+          Movie Deck
+        </p>
+      </div>
+    </footer>
+    <!-- End=>Footer -->
+    
+  </body>
+</html>

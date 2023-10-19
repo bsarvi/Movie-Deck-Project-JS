@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+:root {
+  height: 100%;
+}
+
+/* Button Styles */
+.btn {
+  @apply p-2 px-4 bg-primary-400 rounded-full transition;
+  @apply hover:bg-[#1c1c1c];
+  @apply disabled:cursor-not-allowed disabled:hover:bg-primary-400;
+}
+.btn-active {
+  @apply bg-accent hover:bg-accent/70;
+}
+
+select {
+  @apply flex-1 p-2 px-4 bg-primary-400 rounded-full text-primary-200 appearance-none text-center;
+  @apply hover:text-primary-100 duration-200 transition-all;
+}
+
+#toastsContainer {
+  @apply absolute bottom-4 left-4 flex gap-4 flex-col z-50;
+}
+
+.toast {
+  @apply text-white p-5 relative w-fit rounded-lg;
+  transform: translateX(-100%); /* Start with toast offscreen to the left */
+  transition: transform 0.5s;
+}
+.toast.closing {
+  transform: translateX(-100%); /* Slide out to the left when closing */
+}
+
+.successToast {
+  @apply bg-green-600;
+}
+
+.errorToast {
+  @apply bg-red-500;
+}
+
+.closeToastBtn {
+  @apply absolute top-[2px] right-[2px] text-[1rem] p-[5px];
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-track {
+  background: #535353;
+  border-radius: 0.25rem;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #b3b3b3;
+  border: none;
+  border-radius: 0.25rem;
+}
