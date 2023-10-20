@@ -136,20 +136,22 @@ const handleFavIconClick = (movie) => {
 
   const length = Array.from(FAV_TAB.movies).length;
   FAV_TAB.totalPages = Math.floor(length / 20) + (length % 20 === 0 ? 0 : 1);
-  saveToLC();
-  
+  saveToLs();
 };
 
-/* === === === === === === === RENDER MOVIE CARD IN CONATINER  === === === === === === */
-const saveToLC = () => {
+/* === === === === === === === FUNCTION FOR LS  === === === === === === */
+const saveToLs = () => {
   const favMovieString = JSON.stringify(Array.from(FAV_TAB.movies.values()));
   localStorage.setItem("favMovies", favMovieString);
-  
 };
 
-export const getFromLC = () => {
+export const getFromLs = () => {
   const favMovieString = localStorage.getItem("favMovies");
   const movieArr = JSON.parse(favMovieString);
+
+  if (movieArr === null) {
+    return new Map();
+  }
 
   const movieMap = movieArr.reduce((acc, curr) => {
     acc.set(curr.id, curr);
@@ -158,4 +160,24 @@ export const getFromLC = () => {
   return movieMap;
 };
 
+/* === === === === === === === RENDER MOVIE CARD IN CONATINER  === === === === === === */
 
+export function sortByDateAscending(movies) {
+  return movies
+    .slice()
+    .sort((a, b) => a.release_date.localeCompare(b.release_date));
+}
+
+export function sortByDateDescending(movies) {
+  return movies
+    .slice()
+    .sort((a, b) => b.release_date.localeCompare(a.release_date));
+}
+
+export function sortByRatingAscending(movies) {
+  return movies.slice().sort((a, b) => a.vote_average - b.vote_average);
+}
+
+export function sortByRatingDescending(movies) {
+  return movies.slice().sort((a, b) => b.vote_average - a.vote_average);
+}

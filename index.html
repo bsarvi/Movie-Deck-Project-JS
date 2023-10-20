@@ -47,7 +47,7 @@
     <main class="flex-1 mx-1 bg-primary-500 rounded-lg">
       <div class="container m-auto relative my-4 p-2">
 
-        <div class="flex flex-col gap-2 m-2 sm:flex-row sm:justify-between">
+        <div class="flex flex-col gap-2 my-1 sm:flex-row sm:justify-between">
           <div class="relative sm:max-w-lg flex-1">
             <div
               id="search-form"
@@ -90,20 +90,17 @@
             </div>
           </div>
           <div class="flex gap-2">
-            <select id="sort-date" name="sort-by-date">
-              <option value="">Sort by Date</option>
-              <option value="desc">Date-Descending</option>
-              <option value="asc">Date-Ascending</option>
-            </select>
-            <select id="sort-rating">
-              <option value="">Sort by Rating</option>
-              <option value="desc">Rating-Descending</option>
-              <option value="asc">Rating-Ascending</option>
+            <select id="sort" name="sort-by-date">
+              <option value="">Sort</option>
+              <option value="date-desc">Date-Descending</option>
+              <option value="date-asc">Date-Ascending</option>
+              <option value="rating-desc">Rating-Descending</option>
+              <option value="rating-asc">Rating-Ascending</option>
             </select>
           </div>
         </div>
         
-      <section>
+      <section class="mt-8">
         <div>
           <button id="all-tab" class="btn btn-active w-32 capitalize" >all</button>
           <button id="fav-tab" class="btn w-32 capitalize">favorite</button>

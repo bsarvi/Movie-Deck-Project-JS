@@ -1,4 +1,12 @@
-import { fetchMovies, getFromLC, renderMovies } from "./utils.js";
+import {
+  fetchMovies,
+  getFromLs,
+  renderMovies,
+  sortByDateAscending,
+  sortByDateDescending,
+  sortByRatingAscending,
+  sortByRatingDescending,
+} from "./utils.js";
 
 /* ========================================================================= */
 /* === === === === === === === GLOABL VARIABLES === === === === === === ===  */
@@ -21,6 +29,7 @@ const cardsContainer = document.getElementById("cards-container");
 const prevBtnEle = document.getElementById("prev-btn");
 const nextBtnEle = document.getElementById("next-btn");
 const pageNoEle = document.getElementById("page-no");
+const sortSelectEle = document.getElementById("sort");
 
 /* ========================================================================= */
 /* === === === === === === === TAB FUNCTIONALITY === === === === === === === */
@@ -119,6 +128,39 @@ prevBtnEle.addEventListener("click", handelPrevPage);
 /* ============================================================================= */
 /* === === === === === === === Initial FUNCTIONALITY === === === === === === === */
 /* ============================================================================= */
+
+const handelSort = (e) => {
+  const movies =
+    CURR_TAB.active === "fav"
+      ? Array.from(CURR_TAB.movies.values())
+      : CURR_TAB.movies;
+
+  const sortType = e.target.value;
+  let sortedMovies;
+  switch (sortType) {
+    case "rating-asc":
+      sortedMovies = sortByRatingAscending(movies);
+      break;
+    case "rating-desc":
+      sortedMovies = sortByRatingDescending(movies);
+      break;
+    case "date-asc":
+      sortedMovies = sortByDateAscending(movies);
+      break;
+    case "date-desc":
+      sortedMovies = sortByDateDescending(movies);
+      break;
+    default:
+      sortedMovies = movies;
+  }
+  renderMovies(sortedMovies, cardsContainer);
+};
+
+sortSelectEle.addEventListener("change", handelSort);
+
+/* ============================================================================= */
+/* === === === === === === === Initial FUNCTIONALITY === === === === === === === */
+/* ============================================================================= */
 const handelInitialAllTab = async () => {
   ALL_TAB.currentPage = 1;
   ALL_TAB.totalPages = 10;
@@ -127,7 +169,7 @@ const handelInitialAllTab = async () => {
   handelPaginationState();
 };
 const handelInitialFavTab = () => {
-  FAV_TAB.movies = getFromLC();
+  FAV_TAB.movies = getFromLs();
   const length = FAV_TAB.movies.size;
   FAV_TAB.totalPages = Math.floor(length / 20) + (length % 20 === 0 ? 0 : 1);
   FAV_TAB.currentPage = FAV_TAB.totalPages >= 1 ? 1 : 0;
