@@ -6,6 +6,9 @@ import { CURR_TAB, FAV_TAB } from "./app.js";
 const TOP_RATED_MOVIE_URI =
   "https://api.themoviedb.org/3/movie/top_rated?api_key=f531333d637d0c44abc85b3e74db2186&language=en-US&include_adult=false";
 
+const SEARCH_API_URL =
+  "https://api.themoviedb.org/3/search/movie?api_key=f531333d637d0c44abc85b3e74db2186&language=en-US&include_adult=false";
+
 /* === === === === === === === Fetch DATA FROM API  === === === === === === */
 export const fetchMovies = async (page = 1) => {
   try {
@@ -180,4 +183,94 @@ export function sortByRatingAscending(movies) {
 
 export function sortByRatingDescending(movies) {
   return movies.slice().sort((a, b) => b.vote_average - a.vote_average);
+}
+
+export function debounce(func, delay) {
+  let timerId;
+
+  return function () {
+    const context = this;
+    const args = arguments;
+    clearTimeout(timerId);
+    timerId = setTimeout(function () {
+      func.apply(context, args);
+    }, delay);
+  };
+}
+
+export const searchByQuery = async (query, page = 1) => {
+  try {
+    const res = await fetch(`${SEARCH_API_URL}&query=${query}&page=${page}`);
+
+    if (!res.ok) {
+      throw new Error(`Request failed with status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    if (data.results) {
+      return data.results.map((movie) => {
+        let { id, poster_path, release_date, title, vote_average, vote_count } =
+          movie;
+
+        if (poster_path === null) {
+          poster_path = "/images/noImage.jpg";
+        } else {
+          poster_path = `https://image.tmdb.org/t/p/original${poster_path}`;
+        }
+
+        return {
+          id,
+          release_date,
+          title,
+          vote_average,
+          vote_count,
+          poster_path,
+        };
+      });
+    } else {
+      throw new Error("No results found");
+    }
+  } catch (error) {
+    console.error("Error in searchByQuery:", error);
+    throw error;
+  }
+};
+
+export function renderSearchCards(movies, searchCardContainer) {
+  if (movies.length === 0) {
+    searchCardContainer.innerHTML = `<p class="w-full text-center text-primary-200">No Movies found</p>`;
+    return;
+  }
+
+  searchCardContainer.innerHTML = movies
+    .map((movie) => {
+      const { id, poster_path, title, vote_average, vote_count } = movie;
+      const card = `<div
+    class="flex gap-2 w-full overflow-hidden relative cursor-pointer p-2 rounded-lg bg-[#1c1c1c] hover:bg-primary-500 transition-all duration-200"
+  >
+    <img
+      src="${poster_path}"
+      alt=""
+      class="h-16 w-auto"
+    />
+    <div class="flex-1 flex flex-col gap-2">
+      <h3
+        class="text-xl text-primary-200 font-young-serif font-bold w-full truncate text-ellipsis"
+      >
+        ${title}
+      </h3>
+      <div class="flex gap-4 text-primary-300">
+        <div>
+          <i class="fa-solid fa-fingerprint"></i
+          > ${vote_count}
+        </div>
+        <div>
+          <i class="fa-regular fa-star"></i> ${vote_average}
+        </div>
+      </div>
+    </div>
+  </div>`;
+      return card;
+    })
+    .join("");
 }

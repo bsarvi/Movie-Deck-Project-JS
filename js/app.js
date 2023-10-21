@@ -1,7 +1,10 @@
 import {
+  debounce,
   fetchMovies,
   getFromLs,
   renderMovies,
+  renderSearchCards,
+  searchByQuery,
   sortByDateAscending,
   sortByDateDescending,
   sortByRatingAscending,
@@ -30,6 +33,10 @@ const prevBtnEle = document.getElementById("prev-btn");
 const nextBtnEle = document.getElementById("next-btn");
 const pageNoEle = document.getElementById("page-no");
 const sortSelectEle = document.getElementById("sort");
+const searchInput = document.getElementById("search-input");
+const searchResultContainer = document.getElementById(
+  "search-result-container"
+);
 
 /* ========================================================================= */
 /* === === === === === === === TAB FUNCTIONALITY === === === === === === === */
@@ -125,9 +132,9 @@ const handelPrevPage = async () => {
 nextBtnEle.addEventListener("click", handelNextPage);
 prevBtnEle.addEventListener("click", handelPrevPage);
 
-/* ============================================================================= */
-/* === === === === === === === Initial FUNCTIONALITY === === === === === === === */
-/* ============================================================================= */
+/* ========================================================================== */
+/* === === === === === === === SORT FUNCTIONALITY === === === === === === === */
+/* ========================================================================== */
 
 const handelSort = (e) => {
   const movies =
@@ -157,6 +164,53 @@ const handelSort = (e) => {
 };
 
 sortSelectEle.addEventListener("change", handelSort);
+
+/* ========================================================================== */
+/* === === === === === === === SEARCH FUNCTIONALITY === === === === === === === */
+/* ========================================================================== */
+
+const performSearch = async () => {
+  const query = searchInput.value;
+  try {
+    const movies = await searchByQuery(query);
+    renderSearchCards(movies, searchResultContainer);
+  } catch (error) {
+    console.log("error");
+  }
+};
+
+const debounceSearch = debounce(performSearch, 500);
+
+const showResult = () => {
+  searchResultContainer.style.display = "block";
+};
+const hideResults = () => {
+  searchResultContainer.style.display = "none";
+  searchResultContainer.innerHTML = `<p class="w-full text-center text-primary-200">Enter name to search</p>`;
+  searchInput.value = "";
+};
+
+searchInput.addEventListener("input", () => {
+  if (searchInput.value.length < 3) {
+    return;
+  }
+  debounceSearch();
+});
+searchInput.addEventListener("focus", showResult);
+document.addEventListener("click", (ev) => {
+  if (ev.target !== searchInput && ev.target !== searchResultContainer) {
+    hideResults();
+  }
+});
+searchResultContainer.addEventListener("click", (ev) => {
+  ev.stopPropagation();
+});
+
+document.addEventListener("keydown", (ev) => {
+  if (event.key === "Escape") {
+    hideResults();
+  }
+});
 
 /* ============================================================================= */
 /* === === === === === === === Initial FUNCTIONALITY === === === === === === === */
